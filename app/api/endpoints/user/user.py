@@ -30,7 +30,7 @@ async def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
             response_model=list[User],
             # dependencies=[Depends(RoleChecker(['admin']))]
             )
-async def read_all_user( skip: int = 0, limit: int = 100,  db: Session = Depends(get_db)):
+async def read_all_user(skip: int = 0, limit: int = 100,  db: Session = Depends(get_db)):
     return user_functions.read_all_user(db, skip, limit)
 
 # get user by id 

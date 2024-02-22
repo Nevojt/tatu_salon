@@ -1,13 +1,15 @@
 # fastapi
 from fastapi import FastAPI
 from app.core.modules import init_routers, make_middleware
+from app.models import user
+from app.core.database import engine
 
+user.Base.metadata.create_all(bind=engine)
 
 def create_app() -> FastAPI:
     app_ = FastAPI(
-        title="FastAPI starter kit",
-        description="FastAPI starter kit that is needed for every fastapi project. The repo is developed with 💗 by mahmud.",
-        version="1.0.0",
+        title="Tattoo Salon",
+        description="BackEnd for FastAPI Tattoo Salon",
         # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
     )

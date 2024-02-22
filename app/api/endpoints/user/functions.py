@@ -11,7 +11,7 @@ from jose import JWTError, jwt
 # import 
 from app.models import user as UserModel
 from app.schemas.user import UserCreate, UserUpdate
-from app.core.settings import SECRET_KEY, ALGORITHM
+from app.core.config import settings
 from app.core.dependencies import get_db, oauth2_scheme
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -30,7 +30,7 @@ def get_user_by_id(db: Session, user_id: int):
 # crete new user 
 def create_new_user(db: Session, user: UserCreate):
     hashed_password = pwd_context.hash(user.password)
-    new_user = UserModel.User(email=user.email, password=hashed_password, first_name=user.first_name, last_name=user.last_name)
+    new_user = UserModel.User(email=user.email, password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -79,7 +79,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
     return encoded_jwt
 
 # get current users info 
@@ -90,7 +90,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Annotate
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         # print(f"Payload =====> {payload}")
         current_email: str = payload.get("email")
         if current_email is None:

@@ -12,6 +12,7 @@ class User(CommonModel):
 
 	email = Column(String, unique=True, index=True)
 	password = Column(String)
+	phone = Column(String, unique=True, index=True)
 	first_name = Column(String, nullable=True)
 	last_name = Column(String, nullable=True)
 	role = Column(Enum(UserRole), default=UserRole.user)

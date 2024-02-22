@@ -8,6 +8,7 @@ class UserAdmin(ModelView, model=User):
         User.first_name,
         User.last_name,
         User.email,
+        User.phone,
         User.password,
         User.is_active,
         User.role,
