@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 from datetime import timedelta
-from fastapi.security import OAuth2PasswordBearer
+
 # sqlalchemy
 from sqlalchemy.orm import Session
 
@@ -13,7 +13,10 @@ from app.core.config import settings
 from app.api.endpoints.user import functions as user_functions
 
 
-auth_module = APIRouter()
+auth_module = APIRouter(
+    prefix="/auth",
+    tags=["auth"]
+)
 
 # ============> login/logout < ======================
 # getting access token for login 
@@ -38,5 +41,5 @@ async def login_for_access_token(
 
 # get curren user 
 @auth_module.get('/users/me/', response_model= User)
-async def read_current_user( current_user: Annotated[User, Depends(user_functions.get_current_user)]):
+async def read_current_user(current_user: Annotated[User, Depends(user_functions.get_current_user)]):
     return current_user

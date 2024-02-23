@@ -8,6 +8,7 @@ user.Base.metadata.create_all(bind=engine)
 
 def create_app() -> FastAPI:
     app_ = FastAPI(
+        root_path="/tattoo/app",
         title="Tattoo Salon",
         description="BackEnd for FastAPI Tattoo Salon",
         # dependencies=[Depends(Logging)],
