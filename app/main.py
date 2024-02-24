@@ -1,5 +1,8 @@
 # fastapi
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from app.core.modules import init_routers, make_middleware
 from app.models import user
 from app.core.database import engine
@@ -19,3 +22,9 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
+templates = Jinja2Templates(directory="templates")
+@app.route('/error')
+async def error(request: Request):
+    return templates.TemplateResponse("error.html", {"request": request})
+    
