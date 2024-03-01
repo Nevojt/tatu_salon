@@ -33,6 +33,3 @@ templates = Jinja2Templates(directory="templates")
 async def error(request: Request):
     return templates.TemplateResponse("error.html", {"request": request})
     
-@app.get("/home")
-async def home_page(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
